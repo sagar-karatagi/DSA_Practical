@@ -1,0 +1,164 @@
+// AVL Operation insert search display in ascending order
+
+#include <iostream>
+using namespace std;
+struct tnode
+{
+    int data;
+    tnode *L, *R;
+};
+class AVL
+{
+private:
+    tnode *root;
+
+public:
+    AVL(){ root = NULL; }
+
+    void create()
+    {
+        char ch;
+        int val;
+        do
+        {
+            cout << "Enter data to insert into Search Tree: ";
+            cin >> val;
+            root = insert(root, val);
+            cout << "\n root of node is :" << root->data;
+            cout << "\n Do you want to add more(y/n): ";
+            cin >> ch;
+        } while (ch != 'n');
+    }
+
+    void display()
+    {
+        cout << "\n Dictionary Data in Sorted way (Inoredr)";
+        cout << "\n inorder";
+        inorder(root);
+        cout << "\n Preorder";
+        preorder(root);
+        cout << "\n Postorder";
+        postorder(root);
+    }
+
+    void inorder(tnode *temp)
+    {
+        if (temp != NULL)
+        {
+            inorder(temp->L);
+            cout << "\t" << temp->data;
+            inorder(temp->R);
+        }
+    }
+
+    void preorder(tnode *temp)
+    {
+        if (temp != NULL)
+        {
+            cout << "\t" << temp->data;
+            preorder(temp->L);
+            preorder(temp->R);
+        }
+    }
+
+    void postorder(tnode *temp)
+    {
+        if (temp != NULL)
+        {
+            postorder(temp->L);
+            postorder(temp->R);
+            cout << "\t" << temp->data;
+        }
+    }
+
+    tnode *insert(tnode *temp, int val)
+    {
+        if (temp == NULL)
+        {
+            temp = new tnode;
+            temp->data = val;
+            temp->L = temp->R = NULL;
+        }
+        else
+        {
+            if (val < temp->data)
+            {
+                temp->L = insert(temp->L, val);
+                if ((height(temp->L) - height(temp->R) == 2))
+                {
+                    if (val < temp->L->data)
+                        temp = LL(temp);
+                    else
+                        temp = LR(temp);
+                }
+            }
+            else
+            {
+                temp->R = insert(temp->R, val);
+                if ((height(temp->R) - height(temp->L) == 2))
+                {
+                    if (val > temp->R->data)
+                        temp = RR(temp);
+                    else
+                        temp = RL(temp);
+                }
+            }
+        }
+        return temp;
+    }
+    
+    tnode *LL(tnode *parent)
+    {
+        tnode *temp;
+        temp = parent->L;
+        parent->L = temp->R;
+        temp->R = parent;
+        return temp;
+    }
+   
+    tnode *RR(tnode *parent)
+    {
+        tnode *temp;
+        temp = parent->R;
+        parent->R = temp->L;
+        temp->L = parent;
+        return temp;
+    }
+   
+    tnode *LR(tnode *parent)
+    {
+        parent->L = RR(parent->L);
+        parent = LL(parent);
+        return parent;
+    }
+   
+    tnode *RL(tnode *parent)
+    {
+        parent->R = LL(parent->R);
+        parent = RR(parent);
+        return parent;
+    }
+   
+    int MAX(int a, int b)
+    {
+        if (a > b)
+            return a;
+        else
+            return b;
+    }
+    int height(tnode *temp)
+    {
+        if (temp == NULL)
+            return -1;
+        if (temp->L == NULL && temp->R == NULL)
+            return 0;
+        return (1 + MAX(height(temp->L), height(temp->R)));
+    }
+};
+int main()
+{
+    AVL T;
+    T.create();
+    T.display();
+    return 0;
+}

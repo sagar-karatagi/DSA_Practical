@@ -1,0 +1,147 @@
+// Array Operations
+
+#include <iostream>
+using namespace std;
+
+const int ROWS = 3;
+const int COLS = 3;
+
+
+void insertElement(int arr[ROWS][COLS], int row, int col, int value)
+{
+    if (row < ROWS && col < COLS && row >= 0 && col >= 0)
+    {
+        arr[row][col] = value;
+        cout << "Inserted successfully!" << endl;
+    }
+    else
+    {
+        cout << "Index Error!!" << endl;
+    }
+}
+
+
+void displayElements(int arr[ROWS][COLS])
+{
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLS; j++)
+        {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
+void searchElement(int arr[ROWS][COLS], int value)
+{
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLS; j++)
+        {
+            if (arr[i][j] == value)
+            {
+                cout << "Element found at (" << i << "," << j << ")" << endl;
+                return;
+            }
+        }
+    }
+    cout << "Element not found!" << endl;
+}
+
+
+void minimumElement(int arr[ROWS][COLS])
+{
+    int min = arr[0][0];
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLS; j++)
+        {
+            if (arr[i][j] < min)
+            {
+                min = arr[i][j];
+            }
+        }
+    }
+    cout << "Minimum element is " << min << endl;
+}
+
+
+void maximumElement(int arr[ROWS][COLS])
+{
+    int max = arr[0][0];
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLS; j++)
+        {
+            if (arr[i][j] > max)
+            {
+                max = arr[i][j];
+            }
+        }
+    }
+    cout << "Maximum element is " << max << endl;
+}
+
+
+int main()
+{
+    int arr[ROWS][COLS] = {{0}};
+    bool quit = true;
+    while (quit)
+    {
+        cout << "Enter what do you want to do :-" << endl;
+        cout << "1.Insert element" << endl;
+        cout << "2.Display elements" << endl;
+        cout << "3.Search element" << endl;
+        cout << "4.Minimum element" << endl;
+        cout << "5.Maximum element" << endl;
+        cout << "6.Quit" << endl;
+        int choice;
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            int row, col, value;
+            cout << "Enter Position:-" << endl;
+            cout << "Row:- ";
+            cin >> row;
+            cout << "Column:- ";
+            cin >> col;
+            cout << "Enter the value to insert:- ";
+            cin >> value;
+
+            insertElement(arr, row - 1, col - 1, value);
+            break;
+
+        case 2:
+            displayElements(arr);
+            break;
+
+        case 3:
+            cout << "Enter the element to search:- ";
+            int c;
+            cin >> c;
+            searchElement(arr, c);
+            break;
+
+        case 4:
+            minimumElement(arr);
+            break;
+
+        case 5:
+            maximumElement(arr);
+            break;
+
+        case 6:
+            quit = false;
+            break;
+
+        default:
+            cout << "Enter valid input!!" << endl;
+        }
+    }
+    return 0;
+}

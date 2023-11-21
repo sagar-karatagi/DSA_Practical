@@ -1,0 +1,168 @@
+// Circular Linked List
+
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+};
+class CL
+{
+public:
+    node *head;
+    node *last;
+
+    CL()
+    {
+        head = {nullptr};
+    }
+
+    void insert(int value)
+    {
+        node *nn = new node;
+        nn->data = value;
+        if (head == nullptr)
+        {
+            nn->next = nn;
+            head = nn;
+            last = nn;
+        }
+        else
+        {
+            nn->next = head;
+            last->next = nn;
+            head = nn;
+        }
+    }
+
+    void display()
+    {
+        if (head == nullptr)
+        {
+            cout << "Cll is empty" << endl;
+            return;
+        }
+
+        node *cn = head;
+        do
+        {
+            cout << cn->data << "->";
+            cn = cn->next;
+
+        } while (cn != head);
+        cout << "nullptr" << endl;
+    }
+
+
+    bool search(int value)
+    {
+        if (head == nullptr)
+        {
+            cout << value << "Not found in the cll becoz its a empty cll" << endl;
+            return false;
+        }
+        node *cn = head;
+        do
+        {
+            if (cn->data == value)
+            {
+                cout << value << " Found in the cll " << endl;
+                return true;
+            }
+            cn = cn->next;
+        } while (cn != head);
+
+        cout << value << " Not Found in the cll";
+        return false;
+    }
+
+    void deleteNode(int value)
+    {
+        if (head == nullptr)
+        {
+            cout << "List is empty, cannot delete element." << endl;
+            return;
+        }
+
+        node *cn = head;
+        node *prev = nullptr;
+
+        do
+        {
+            if (cn->data == value)
+            {
+                if (prev != nullptr)
+                {
+                    prev->next = cn->next;
+                    if (cn == head)
+                    {
+                        head = cn->next;
+                    }
+                    if (cn == last)
+                    {
+                        last = prev;
+                        last->next = head;
+                    }
+                }
+                delete cn;
+                cout << value << " Deleted from the list";
+                return;
+            }
+            prev = cn;
+            cn = cn->next;
+        } while (cn != head);
+        cout << value << " not found in the  Cll List" << endl;
+    }
+};
+int main()
+{
+    CL CL;
+    int value;
+    char choice;
+    do
+    {
+        cout << "\nSelect an operation:" << endl;
+        cout << "1. Insert into the linked list" << endl;
+        cout << "2. Delete from the linked list" << endl;
+        cout << "3. Search in the linked list" << endl;
+        cout << "4. Display the linked list" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: " << endl;
+        cin >> choice;
+
+        switch (choice)
+        {
+        case '1':
+            cout << "Enter the value to be inserted: ";
+            cin >> value;
+            CL.insert(value);
+            break;
+        case '2':
+            cout << "Enter the value to be deleted: ";
+            cin >> value;
+            CL.deleteNode(value);
+            break;
+        case '3':
+            cout << "Enter the value to be searched: ";
+            cin >> value;
+            if (CL.search(value))
+                cout << "";
+            else
+                cout << "";
+            break;
+        case '4':
+            CL.display();
+            break;
+        case '5':
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+    } while (choice != '5');
+
+    return 0;
+}

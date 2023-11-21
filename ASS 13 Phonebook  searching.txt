@@ -1,0 +1,130 @@
+// phonebook searching
+
+#include <iostream>
+using namespace std;
+class Person
+{
+public:
+    string name;
+    string contact;
+};
+void accept_phonebook(Person p[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter name: ";
+        cin >> p[i].name;
+        cout << "Enter contact: ";
+        cin >> p[i].contact;
+    }
+}
+void linearSearch(Person p[], int n, string s)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (p[i].name == s)
+        {
+            cout << p[i].name << " : " << p[i].contact << endl;
+            return;
+        }
+    }
+    cout << "Contact not found !!" << endl;
+}
+int binarySearch(Person p[], int l, int r, string s)
+{
+    while (l <= r)
+    {
+        int mid = l + (r - l) / 2;
+        if (p[mid].name == s)
+        {
+            return mid;
+        }
+        else if (p[mid].name < s)
+        {
+            l = mid + 1;
+        }
+        else
+        {
+            r = mid - 1;
+        }
+    }
+    return -1;
+}
+void sortPersons(Person p[], int n)
+{
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (p[j].name > p[j + 1].name)
+            {
+                Person temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
+            }
+        }
+    }
+}
+int main()
+{
+    int choice, count = 0, result;
+    string searchName;
+    cout << "Enter phonebook : " << endl;
+    cout << "Enter number of contacts: ";
+    cin >> count;
+    Person *P = new Person[count];
+    accept_phonebook(P, count);
+    while (true)
+    {
+        cout << "Menu:\n";
+        cout << "1. Search by Linear Search\n";
+        cout << "2. Search by Binary Search\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            if (count > 0)
+            {
+                cout << "Enter name to search: ";
+                cin >> searchName;
+                linearSearch(P, count, searchName);
+            }
+            else
+            {
+                cout << "Phonebook is empty. Please enter contacts first." << endl;
+            }
+            break;
+        case 2:
+            sortPersons(P, count);
+            if (count > 0)
+            {
+                cout << "Enter name to search: ";
+                cin >> searchName;
+                result = binarySearch(P, 0, count - 1, searchName);
+                if (result != -1)
+                {
+                    cout << P[result].name << " : " << P[result].contact << endl;
+                }
+                else
+                {
+                    cout << "Contact not found !!" << endl;
+                }
+            }
+            else
+            {
+                cout << "Phonebook is empty. Please enter contacts first." << endl;
+            }
+            break;
+        case 3:
+            cout << "Exiting program !" << endl;
+            exit(0);
+            break;
+        default:
+            cout << "Enter a valid input !!" << endl;
+            break;
+        }
+    }
+    return 0;
+}

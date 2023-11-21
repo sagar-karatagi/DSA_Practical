@@ -1,0 +1,257 @@
+// BST
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *right;
+    node *left;
+};
+
+class BST
+{
+    node *root;
+
+public:
+    BST()
+    {
+        root = nullptr;
+    }
+
+    void Craete(int data)
+    {
+        node *nn = new node;
+        nn->data = data;
+        nn->left = nn->right = nullptr;
+
+        if (root == nullptr)
+        {
+            root = nn;
+        }
+        else
+        {
+            node *temp, *parent;
+            temp = root;
+            while (temp != nullptr)
+            {
+
+                parent = temp;
+
+                if (nn->data < temp->data)
+                {
+                    temp = temp->left;
+                }
+                else
+                {
+                    temp = temp->right;
+                }
+            }
+            if (nn->data < parent->data)
+            {
+                parent->left = nn;
+            }
+            else
+            {
+                parent->right = nn;
+            }
+        }
+    }
+
+    void inorder(node *temp)
+    {
+        if (temp != nullptr)
+        {
+            inorder(temp->left);
+            cout << temp->data << " ";
+            inorder(temp->right);
+        }
+    }
+
+    void preorder(node *temp)
+    {
+        if (temp != nullptr)
+        {
+            cout << temp->data << " ";
+            preorder(temp->left);
+            preorder(temp->right);
+        }
+    }
+
+    void postorder(node *temp)
+    {
+        if (temp != nullptr)
+        {
+            postorder(temp->left);
+            postorder(temp->right);
+            cout << temp->data << " ";
+        }
+    }
+
+    void display()
+    {
+        if (root == nullptr)
+        {
+            cout << " Tree is Empty" << endl;
+        }
+        else
+        {
+            cout << "Inorder: ";
+            inorder(root);
+            cout << endl;
+
+            cout << "Inorder: ";
+            preorder(root);
+            cout << endl;
+
+            cout << "Inorder: ";
+            postorder(root);
+            cout << endl;
+        }
+    }
+
+    void Search(int data)
+    {
+        node *temp = root;
+        node *parent = nullptr;
+        while (temp != nullptr)
+        {
+            if (temp->data == data)
+            {
+                cout << temp->data << " found";
+                return;
+            }
+            else
+            {
+                parent = temp;
+                if (data < temp->data)
+                {
+                    temp = temp->left;
+                }
+                else
+                {
+                    temp = temp->right;
+                }
+            }
+            if (temp == nullptr)
+            {
+                cout << "Elemnt Not Found";
+            }
+        }
+    }
+
+    node *findmin(node *temp)
+    {
+        if (temp->left != nullptr)
+        {
+            temp = temp->left;
+        }
+        return temp;
+    }
+
+    node *deleteNode(node *temp, int key)
+    {
+        if (temp == nullptr)
+        {
+            return temp;
+        }
+        if (temp->data != key)
+        {
+            cout << "Not found";
+        }
+
+        if (key < temp->data)
+        {
+            temp->left = deleteNode(temp->left, key);
+        }
+        else if (key > temp->data)
+        {
+            temp->right = deleteNode(temp->right, key);
+        }
+        else
+        {
+            if (temp->right == nullptr)
+            {
+                node *tempRight = temp->right;
+                delete temp;
+                return tempRight;
+            }
+            if (temp->left == nullptr)
+            {
+                node *tempLeft = temp->left;
+                delete temp;
+                return tempLeft;
+            }
+            node *minRight = findmin(temp->right);
+            temp->data = minRight->data;
+            temp->right = deleteNode(temp->right, minRight->data);
+        }
+    }
+
+    void Delete(int key)
+    {
+        root = deleteNode(root, key);
+    }
+};
+
+int main()
+{
+    BST B;
+    cout << "\nCreating a Binary Search Tree... \n"
+         << endl;
+
+    char choice;
+    do
+    {
+        int data;
+        cout << "Enter data to be inserted: ";
+        cin >> data;
+        B.Craete(data);
+        cout << "Do you want to insert another node? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    int option;
+    do
+    {
+        cout << "\nChoose an operation:\n";
+        cout << "1. Display Tree\n";
+        cout << "2. Search\n";
+        cout << "3. Delete\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> option;
+
+        switch (option)
+        {
+        case 1:
+            cout << "\nDisplaying the Binary Search Tree...\n";
+            B.display();
+            break;
+
+        case 2:
+            int searchData;
+            cout << "\nEnter the key to search: ";
+            cin >> searchData;
+            B.Search(searchData);
+            break;
+
+        case 3:
+            int deleteData;
+            cout << "\nEnter the key to delete: ";
+            cin >> deleteData;
+            B.Delete(deleteData);
+            break;
+
+        case 4:
+            cout << "\nExiting program.\n";
+            break;
+
+        default:
+            cout << "\nInvalid choice. Please enter a valid option.\n";
+            break;
+        }
+    } while (option != 4);
+
+    return 0;
+}

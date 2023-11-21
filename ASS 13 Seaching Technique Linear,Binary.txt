@@ -1,0 +1,106 @@
+// Seaching Technique Linear,Binary
+
+#include <iostream>
+using namespace std;
+
+
+class Search
+{
+public:
+  // Linear Search
+  void linearSearch(int A[], int n, int key)
+  {
+    int i;
+    for (i = 0; i < n; i++)
+    {
+      if (key == A[i])
+      {
+        cout << "Element found at Position " << i + 1 << endl;
+        return;
+      }
+    }
+    cout << "Element not found" << endl;
+  }
+
+
+  // Binary Search
+  void binarySearch(int A[], int low, int high, int key)
+  {
+    while (low <= high)
+    {
+      int mid = (low + high) / 2;
+
+
+      if (key == A[mid])
+      {
+        cout << "Element found at index " << mid << " using binary search." << endl;
+        return;
+      }
+      else if (key < A[mid])
+      {
+        high = mid - 1;
+      }
+      else
+      {
+        low = mid + 1;
+      }
+    }
+    cout << "Element not found using binary search." << endl;
+  }
+};
+
+
+int main()
+{
+  int n;
+  cout << "Enter the size of the array: ";
+  cin >> n;
+
+
+  int *arr = new int[n]; // Using dynamic memory allocation
+
+
+  cout << "Enter the elements of the array:" << endl;
+  for (int i = 0; i < n; i++)
+  {
+    cout << "Enter element " << i + 1 << ": ";
+    cin >> arr[i];
+  }
+
+
+  Search searchObj;
+  int key, choice;
+
+
+  while (true)
+  {
+    cout << "\nEnter the key to search: ";
+    cin >> key;
+
+
+    cout << "Choose the search method:\n1. Linear Search\n2. Binary Search\n3. Exit\n";
+    cin >> choice;
+
+
+    switch (choice)
+    {
+    case 1:
+      searchObj.linearSearch(arr, n, key);
+      break;
+    case 2:
+      searchObj.binarySearch(arr, 0, n - 1, key);
+      break;
+    case 3:
+      cout << "Exiting the program." << endl;
+      delete[] arr; // Deallocating the dynamic memory
+      return 0;
+    default:
+      cout << "Invalid choice. Please try again." << endl;
+    }
+  }
+
+
+  delete[] arr; // Deallocating the dynamic memory
+  return 0;
+}
+

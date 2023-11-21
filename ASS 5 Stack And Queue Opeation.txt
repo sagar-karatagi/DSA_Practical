@@ -1,0 +1,185 @@
+// Stack And Queue Opeation
+
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node *next;
+};
+
+class LinkedList
+{
+public:
+    Node *head;
+    LinkedList()
+    {
+        head = nullptr;
+    }
+
+    void insertFront(int value)
+    {
+        Node *newNode = new Node;
+        newNode->data = value;
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void deleteNode(int value)
+    {
+        Node *current = head;
+        Node *prev = nullptr;
+
+        while (current != nullptr && current->data != value)
+        {
+            prev = current;
+            current = current->next;
+        }
+
+        if (current == nullptr)
+        {
+            cout << "Value " << value << " not found in the list." << endl;
+            return;
+        }
+
+        if (prev == nullptr)
+        {
+            head = current->next;
+        }
+        else
+        {
+            prev->next = current->next;
+        }
+
+        delete current;
+    }
+
+    void display()
+    {
+        Node *current = head;
+        cout << "Linked List: ";
+        while (current != nullptr)
+        {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+        cout << "nullptr" << endl;
+    }
+
+    // Function to check if the list is empty
+    bool isEmpty()
+    {
+        return head == nullptr;
+    }
+};
+
+class Stack
+{
+private:
+    LinkedList list;
+
+public:
+    // Function to push an element onto the stack
+    void push(int value)
+    {
+        list.insertFront(value);
+        cout << "Pushed " << value << " onto the stack." << endl;
+    }
+
+    // Function to pop an element from the stack
+    void pop()
+    {
+        if (isEmpty())
+        {
+            cout << "Stack is empty. Cannot pop." << endl;
+        }
+        else
+        {
+            Node *topNode = list.head;
+            int topValue = topNode->data;
+            list.deleteNode(topValue);
+            cout << "Popped " << topValue << " from the stack." << endl;
+        }
+    }
+
+    // Function to check if the stack is empty
+    bool isEmpty()
+    {
+        return list.isEmpty();
+    }
+};
+
+class Queue
+{
+private:
+    LinkedList list;
+
+public:
+    // Function to enqueue an element into the queue
+    void enqueue(int value)
+    {
+        list.insertFront(value);
+        cout << "Enqueued " << value << " into the queue." << endl;
+    }
+
+    // Function to dequeue an element from the queue
+    void dequeue()
+    {
+        if (isEmpty())
+        {
+            cout << "Queue is empty. Cannot dequeue." << endl;
+        }
+        else
+        {
+            Node *frontNode = list.head;
+            int frontValue = frontNode->data;
+            list.deleteNode(frontValue);
+            cout << "Dequeued " << frontValue << " from the queue." << endl;
+        }
+    }
+
+    // Function to check if the queue is empty
+    bool isEmpty()
+    {
+        return list.isEmpty();
+    }
+};
+
+int main()
+{
+    Stack myStack;
+    Queue myQueue;
+    int choice, value;
+    do
+    {
+        cout << "Choose an option:\n1. Push a value onto the stack\n2. Pop a value from the stack\n3. Enqueue into the queue\n4. Dequeue from the queue\n5.Exit\n ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter a value to push onto the stack: ";
+            cin >> value;
+            myStack.push(value);
+            break;
+        case 2:
+            myStack.pop();
+            break;
+        case 3:
+            cout << "Enter a value to enqueue: ";
+            cin >> value;
+            myQueue.enqueue(value);
+            break;
+        case 4:
+            myQueue.dequeue();
+            break;
+        case 5:
+            cout << "Exiting the program." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 3);
+
+    return 0;
+}

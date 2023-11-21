@@ -1,0 +1,156 @@
+// TBT Traversal Operation
+
+#include <iostream>
+using namespace std;
+struct node
+{
+    int data;
+    node *left;
+    node *right;
+    int lth;
+    int rth;
+};
+class TBT
+{
+    node *root;
+    node *dummy;
+
+public:
+    TBT()
+    {
+        root = NULL;
+    }
+    void insert()
+    {
+        char ch = 'y';
+        do
+        {
+            node *nn;
+            nn = new node;
+            cout << "Enter data: ";
+            cin >> nn->data;
+            nn->left = nn->right = NULL;
+            nn->lth = nn->rth = 1;
+            if (root == NULL)
+            {
+                dummy = new node;
+                dummy->data = 912;
+                root = nn;
+                nn->lth = nn->rth = 1;
+                dummy->left = dummy->right = root;
+                root->left = dummy;
+                root->right = dummy;
+            }
+            else
+            {
+                node *cn = root;
+                while (1)
+                {
+                    if (nn->data < cn->data)
+                    {
+                        if (cn->lth == 1)
+                        {
+                            nn->left = cn->left;
+                            nn->right = cn;
+                            cn->lth = 0;
+                            cn->left = nn;
+                            break;
+                        }
+                        else
+                            cn = cn->left;
+                    }
+                    else
+                    {
+                        if (cn->rth == 1)
+                        {
+                            nn->right = cn->right;
+                            nn->left = cn;
+                            cn->rth = 0;
+                            cn->right = nn;
+                            break;
+                        }
+                        else
+                            cn = cn->right;
+                    }
+                }
+            }
+            cout << "Do you want to insert more(y/n)";
+            cin >> ch;
+        } while (ch == 'y');
+    }
+    void inorder()
+    {
+        node *cn = root;
+        while (cn != dummy)
+        {
+            while (cn->lth == 0)
+            {
+                cn = cn->left;
+            }
+            cout << cn->data << " ";
+            while (cn->rth == 1)
+            {
+                cn = cn->right;
+                if (cn == dummy)
+                {
+                    return;
+                }
+                cout << cn->data << " ";
+            }
+            cn = cn->right;
+        }
+        cout << "\n";
+    }
+    void preorder()
+    {
+        node *cn = root;
+        while (cn != dummy)
+        {
+            while (cn->lth == 0)
+            {
+                cout << cn->data << " ";
+                cn = cn->left;
+            }
+            cout << cn->data << " ";
+            while (cn->rth == 1)
+            {
+                cn = cn->right;
+
+                if (cn == dummy)
+                {
+                    return;
+                }
+            }
+            cn = cn->right;
+        }
+        cout << endl;
+    }
+
+    void postorder()
+    {
+        postorderRecursive(root);
+        cout << endl;
+    }
+
+    void postorderRecursive(node *current)
+    {
+        if (current != dummy)
+        {
+            postorderRecursive(current->left);
+            postorderRecursive(current->right);
+            cout << current->data << " ";
+        }
+    }
+};
+int main()
+{
+    TBT t1;
+    t1.insert();
+    cout << "The inorder traversal is" << endl;
+    t1.inorder();
+    cout << "\nThe preorder traversal is:" << endl;
+    t1.preorder();
+    cout << "\nThe postorder traversal is:" << endl;
+    t1.postorder();
+    return 0;
+}

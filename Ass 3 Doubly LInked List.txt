@@ -1,0 +1,134 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+    node *prev;
+};
+
+class Dll
+{
+public:
+    node *head;
+    Dll()
+    {
+        head = nullptr;
+    }
+
+    void insert(int value)
+    {
+        node *nn = new node;
+        nn->data = value;
+        nn->next = head;
+        nn->prev = nullptr;
+        if (head != nullptr)
+        {
+            head->prev = nn;
+        }
+        head = nn;
+        cout << value << " Inserted in the Dll" << endl;
+    }
+
+
+    void display()
+    {
+        node *cn = head;
+        while (cn != nullptr)
+        {
+            cout << cn->data << "->";
+            cn = cn->next;
+        }
+        cout << "nullptr \n";
+    }
+
+
+    bool search(int value)
+    {
+        node *cn = head;
+        while (cn != nullptr)
+        {
+            if (cn->data == value)
+            {
+                cout << value << " Found in the list";
+                return true;
+            }
+            cn = cn->next;
+        }
+        cout << value << " Not found in the list";
+        return false;
+    }
+
+
+    void deleteNode(int value)
+    {
+        node *cn = head;
+        node *prev = nullptr;
+
+        while (cn != nullptr && cn->data != value)
+        {
+            cn = cn->next;
+        }
+        if (cn == nullptr)
+        {
+            cout << value << "Not Found";
+            return;
+        }
+        if (cn->prev != nullptr)
+        {
+            cn->prev->next = cn->next;
+        }
+        delete cn;
+        cout << value << " Deleted from the list" << endl;
+    }
+
+};
+int main()
+{
+    Dll DLL;
+    char choice;
+    int value;
+
+    do
+    {
+        cout << "\nChoose an operation:" << endl;
+        cout << "1. Insert into the linked list" << endl;
+        cout << "2. Delete from the linked list" << endl;
+        cout << "3. Search in the linked list" << endl;
+        cout << "4. Display the linked list" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case '1':
+            cout << "Enter the value to be inserted: ";
+            cin >> value;
+            DLL.insert(value);
+            break;
+        case '2':
+            cout << "Enter the value to be deleted: ";
+            cin >> value;
+            DLL.deleteNode(value);
+            break;
+        case '3':
+            cout << "Enter the value to be searched: ";
+            cin >> value;
+            (DLL.search(value));
+            break;
+        case '4':
+            DLL.display();
+            break;
+        case '5':
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+    } while (choice != '5');
+
+    return 0;
+}

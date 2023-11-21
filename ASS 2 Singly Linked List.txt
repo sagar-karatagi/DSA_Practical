@@ -1,0 +1,153 @@
+// Singly Linked List
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+};
+
+class LL
+{
+public:
+    node *head;
+
+    LL()
+    {
+        head = {nullptr};
+    }
+
+    void Reverse()
+    {
+        node *current = head;
+        node *prev = nullptr;
+        node *next = nullptr;
+        while (current != nullptr)
+        {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
+    }
+
+
+    void insert(int value)
+    {
+        node *nn = new node;
+        nn->data = value;
+        nn->next = head;
+        head = nn;
+    }
+
+
+    void display()
+    {
+        node *cn = head;
+        while (cn != nullptr)
+        {
+            cout << cn->data << "->";
+            cn = cn->next;
+        }
+        cout << "nullptr \n";
+    }
+
+
+    bool search(int value)
+    {
+        node *cn = head;
+        while (cn != nullptr)
+        {
+            if (cn->data == value)
+            {
+                cout << value << " Found in the list" << endl;
+                return true;
+            }
+            cn = cn->next;
+        }
+        cout << value << " Not found in the list " << endl;
+        return false;
+    }
+
+    void deleteNode(int value)
+    {
+        node *cn = head;
+        node *prev = nullptr;
+
+        while (cn != nullptr && cn->data != value)
+        {
+            cn = cn->next;
+        }
+        if (cn == nullptr)
+        {
+            cout << value << " Not Found In The List ";
+            return;
+        }
+        if (prev == nullptr)
+        {
+            head = cn->next;
+        }
+        else
+        {
+            prev->next = cn->next;
+        }
+        delete cn;
+        cout << value << " Deleted From List" << endl;
+        return;
+    }
+};
+int main()
+{
+    LL L;
+    int value;
+    char choice;
+
+    do
+    {
+        cout << "\nSelect an operation: " << endl;
+        cout << "1. Insert into the linked list" << endl;
+        cout << "2. Delete from the linked list" << endl;
+        cout << "3. Search in the linked list" << endl;
+        cout << "4. Reverse the linked list" << endl;
+        cout << "5. Display the linked list" << endl;
+        cout << "6. Exit \n"
+             << endl;
+        cout << "enter the choice";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case '1':
+            cout << "enter the value: ";
+            cin >> value;
+            L.insert(value);
+            break;
+        case '2':
+            cout << "enter the value: ";
+            cin >> value;
+            L.deleteNode(value);
+            break;
+        case '3':
+            cout << "Enter the value to be searched: ";
+            cin >> value;
+            L.search(value);
+            break;
+        case '4':
+            L.Reverse();
+            L.display();
+            break;
+        case '5':
+            L.display();
+            break;
+        case '6':
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
+        }
+    } while (choice != '6');
+    return 0;
+}
